@@ -25,14 +25,14 @@ jobs:
       run: dotnet publish -c Release --output ./output/myapp
 
     - name: List files in output
-      run: Is ./output/myapp
+      run: ls ./output/myapp
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'monitorapplication'  # Ditt App Service-namn
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}  # Använder secret
-        package: ${{ env.DOTNET_ROOT }}/myapp
+        package: './output/myapp'
 
-     - name: Check DOTNET_ROOT
-       run: echo $DOTNET_ROOT
+    - name: Check DOTNET_ROOT
+      run: echo $DOTNET_ROOT
