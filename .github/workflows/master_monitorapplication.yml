@@ -3,7 +3,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - monitorapplication
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
@@ -22,7 +22,10 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Publish the app
-      run: dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/myapp
+      run: dotnet publish -c Release --output ./output/myapp
+
+    - name: List files in output
+      run: Is ./output/myapp
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -30,3 +33,6 @@ jobs:
         app-name: 'monitorapplication'  # Ditt App Service-namn
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}  # Använder secret
         package: ${{ env.DOTNET_ROOT }}/myapp
+
+     - name: Check DOTNET_ROOT
+       run: echo $DOTNET_ROOT
